@@ -268,18 +268,92 @@
       border-radius: 12px;
       background: var(--cream);
       box-shadow: 0 8px 24px var(--sage);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .option-card[hidden] {
+      display: none;
+    }
+
+    .option-toggle {
+      position: relative;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
     }
 
     .option-card h3 {
-      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 16px;
+      margin: 0 32px 8px 0;
       color: var(--teal-dark);
       font-size: 24px;
+    }
+
+    .option-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .option-toggle::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      color: var(--teal);
+      content: "+";
+      font-family: "Inter", sans-serif;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .option-card.is-open .option-toggle::after {
+      content: "−";
+    }
+
+    .option-summary {
+      display: block;
+      overflow: hidden;
+      max-width: 70ch;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 14px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .option-risk {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .option-details {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 280ms ease, opacity 180ms ease;
+    }
+
+    .option-card.is-open .option-details {
+      max-height: 600px;
+      opacity: 1;
     }
 
     .option-card dl {
       display: grid;
       gap: 16px;
       margin: 0;
+      padding-top: 16px;
     }
 
     .option-card dt {
@@ -316,6 +390,32 @@
 
     .risk-scale span.filled {
       background: var(--teal);
+    }
+
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .filter-button {
+      min-height: 40px;
+      padding: 8px 16px;
+      border: 1px solid var(--teal);
+      border-radius: 12px;
+      background: var(--cream);
+      color: var(--teal-dark);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .filter-button:hover,
+    .filter-button:focus-visible,
+    .filter-button.is-active {
+      background: var(--teal);
+      color: var(--cream);
     }
 
     .card-note {
@@ -569,72 +669,114 @@
           <h2 id="ways-heading">Six ways to invest</h2>
           <p>Liquidity means how easily you can access your money. Risk ratings are simple learning guides, not guarantees.</p>
         </div>
+        <div class="filter-bar" role="group" aria-label="Filter investment cards by risk">
+          <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter-button" type="button" data-filter="lower" aria-pressed="false">Lower risk 1–2</button>
+          <button class="filter-button" type="button" data-filter="medium" aria-pressed="false">Medium risk 3</button>
+          <button class="filter-button" type="button" data-filter="higher" aria-pressed="false">Higher risk 4–5</button>
+        </div>
         <div class="options-grid">
-          <article class="option-card">
-            <h3>Savings accounts</h3>
-            <dl>
-              <div><dt>What it is</dt><dd>A bank account for keeping money accessible. Any return depends on the account terms.</dd></div>
-              <div><dt>How to start</dt><dd>Compare account terms, fees, access, and deposit protections before opening an account.</dd></div>
-              <div><dt>Risk · 1 of 5</dt><dd><span class="risk-value">1/5</span><div class="risk-scale" role="img" aria-label="Risk level 1 out of 5"><span class="filled"></span><span></span><span></span><span></span><span></span></div></dd></div>
-              <div><dt>Liquidity</dt><dd>Usually high; check withdrawal rules and limits.</dd></div>
-              <div><dt>Who it suits</dt><dd>You, if access and a simple place to keep savings matter to you.</dd></div>
-            </dl>
+          <article class="option-card" data-risk="1">
+            <button class="option-toggle" type="button" aria-expanded="false" aria-controls="details-savings">
+              <h3><span class="option-title"><span aria-hidden="true">🏦</span>Savings accounts</span></h3>
+              <span class="option-summary">Keep money accessible in an account with terms you can review.</span>
+              <span class="option-risk">Risk 1 of 5</span>
+              <span class="risk-scale" role="img" aria-label="Risk level 1 out of 5"><span class="filled"></span><span></span><span></span><span></span><span></span></span>
+            </button>
+            <div class="option-details" id="details-savings">
+              <dl>
+                <div><dt>What it is</dt><dd>A bank account for keeping money accessible. Any return depends on the account terms.</dd></div>
+                <div><dt>How to start</dt><dd>Compare account terms, fees, access, and deposit protections before opening an account.</dd></div>
+                <div><dt>Liquidity</dt><dd>Usually high; check withdrawal rules and limits.</dd></div>
+                <div><dt>Who it suits</dt><dd>You, if access and a simple place to keep savings matter to you.</dd></div>
+              </dl>
+            </div>
           </article>
 
-          <article class="option-card">
-            <h3>National Savings schemes</h3>
-            <dl>
-              <div><dt>What it is</dt><dd>Government-backed savings instruments with terms that vary by scheme.</dd></div>
-              <div><dt>How to start</dt><dd>Read the official scheme rules, eligibility, holding period, and early encashment terms.</dd></div>
-              <div><dt>Risk · 2 of 5</dt><dd><span class="risk-value">2/5</span><div class="risk-scale" role="img" aria-label="Risk level 2 out of 5"><span class="filled"></span><span class="filled"></span><span></span><span></span><span></span></div></dd></div>
-              <div><dt>Liquidity</dt><dd>Varies; some schemes require you to wait or accept different terms.</dd></div>
-              <div><dt>Who it suits</dt><dd>You, if you prefer set terms and can match them to your time horizon.</dd></div>
-            </dl>
+          <article class="option-card" data-risk="2">
+            <button class="option-toggle" type="button" aria-expanded="false" aria-controls="details-national-savings">
+              <h3><span class="option-title"><span aria-hidden="true">📜</span>National Savings schemes</span></h3>
+              <span class="option-summary">Use savings instruments with government backing and set terms.</span>
+              <span class="option-risk">Risk 2 of 5</span>
+              <span class="risk-scale" role="img" aria-label="Risk level 2 out of 5"><span class="filled"></span><span class="filled"></span><span></span><span></span><span></span></span>
+            </button>
+            <div class="option-details" id="details-national-savings">
+              <dl>
+                <div><dt>What it is</dt><dd>Government-backed savings instruments with terms that vary by scheme.</dd></div>
+                <div><dt>How to start</dt><dd>Read the official scheme rules, eligibility, holding period, and early encashment terms.</dd></div>
+                <div><dt>Liquidity</dt><dd>Varies; some schemes require you to wait or accept different terms.</dd></div>
+                <div><dt>Who it suits</dt><dd>You, if you prefer set terms and can match them to your time horizon.</dd></div>
+              </dl>
+            </div>
           </article>
 
-          <article class="option-card">
-            <h3>Mutual funds</h3>
-            <dl>
-              <div><dt>What it is</dt><dd>A pool of investors’ money managed across assets under a fund’s stated rules.</dd></div>
-              <div><dt>How to start</dt><dd>Learn the fund type, fees, risks, and withdrawal process before investing.</dd></div>
-              <div><dt>Risk · 3 of 5</dt><dd><span class="risk-value">3/5</span><div class="risk-scale" role="img" aria-label="Risk level 3 out of 5"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span><span></span></div></dd></div>
-              <div><dt>Liquidity</dt><dd>Often moderate to high; processing time depends on the fund.</dd></div>
-              <div><dt>Who it suits</dt><dd>You, if you want managed exposure and understand the fund’s risks and fees.</dd></div>
-            </dl>
+          <article class="option-card" data-risk="3">
+            <button class="option-toggle" type="button" aria-expanded="false" aria-controls="details-mutual-funds">
+              <h3><span class="option-title"><span aria-hidden="true">📊</span>Mutual funds</span></h3>
+              <span class="option-summary">Pool money with others across assets under a fund’s rules.</span>
+              <span class="option-risk">Risk 3 of 5</span>
+              <span class="risk-scale" role="img" aria-label="Risk level 3 out of 5"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span><span></span></span>
+            </button>
+            <div class="option-details" id="details-mutual-funds">
+              <dl>
+                <div><dt>What it is</dt><dd>A pool of investors’ money managed across assets under a fund’s stated rules.</dd></div>
+                <div><dt>How to start</dt><dd>Learn the fund type, fees, risks, and withdrawal process before investing.</dd></div>
+                <div><dt>Liquidity</dt><dd>Often moderate to high; processing time depends on the fund.</dd></div>
+                <div><dt>Who it suits</dt><dd>You, if you want managed exposure and understand the fund’s risks and fees.</dd></div>
+              </dl>
+            </div>
           </article>
 
-          <article class="option-card">
-            <h3>PSX stocks</h3>
-            <dl>
-              <div><dt>What it is</dt><dd>Shares are ownership units in companies listed on the Pakistan Stock Exchange (PSX).</dd></div>
-              <div><dt>How to start</dt><dd>Learn how regulated trading accounts work and how to research a company.</dd></div>
-              <div><dt>Risk · 4 of 5</dt><dd><span class="risk-value">4/5</span><div class="risk-scale" role="img" aria-label="Risk level 4 out of 5"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span></div></dd></div>
-              <div><dt>Liquidity</dt><dd>Varies by share and market conditions; a sale price is not assured.</dd></div>
-              <div><dt>Who it suits</dt><dd>You, if you can handle price changes and have time to learn.</dd></div>
-            </dl>
+          <article class="option-card" data-risk="4">
+            <button class="option-toggle" type="button" aria-expanded="false" aria-controls="details-psx-stocks">
+              <h3><span class="option-title"><span aria-hidden="true">📈</span>PSX stocks</span></h3>
+              <span class="option-summary">Buy ownership units in companies listed on the PSX.</span>
+              <span class="option-risk">Risk 4 of 5</span>
+              <span class="risk-scale" role="img" aria-label="Risk level 4 out of 5"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span></span>
+            </button>
+            <div class="option-details" id="details-psx-stocks">
+              <dl>
+                <div><dt>What it is</dt><dd>Shares are ownership units in companies listed on the Pakistan Stock Exchange (PSX).</dd></div>
+                <div><dt>How to start</dt><dd>Learn how regulated trading accounts work and how to research a company.</dd></div>
+                <div><dt>Liquidity</dt><dd>Varies by share and market conditions; a sale price is not assured.</dd></div>
+                <div><dt>Who it suits</dt><dd>You, if you can handle price changes and have time to learn.</dd></div>
+              </dl>
+            </div>
           </article>
 
-          <article class="option-card">
-            <h3>Gold</h3>
-            <dl>
-              <div><dt>What it is</dt><dd>A physical metal or an investment linked to its value; prices can change.</dd></div>
-              <div><dt>How to start</dt><dd>Learn about purity, storage, buying and selling costs, and how ownership is verified.</dd></div>
-              <div><dt>Risk · 3 of 5</dt><dd><span class="risk-value">3/5</span><div class="risk-scale" role="img" aria-label="Risk level 3 out of 5"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span><span></span></div></dd></div>
-              <div><dt>Liquidity</dt><dd>Moderate; selling takes effort and may involve a price difference.</dd></div>
-              <div><dt>Who it suits</dt><dd>You, if you understand changing prices and can plan for safekeeping.</dd></div>
-            </dl>
+          <article class="option-card" data-risk="3">
+            <button class="option-toggle" type="button" aria-expanded="false" aria-controls="details-gold">
+              <h3><span class="option-title"><span aria-hidden="true">🥇</span>Gold</span></h3>
+              <span class="option-summary">Hold physical gold or an investment linked to its value.</span>
+              <span class="option-risk">Risk 3 of 5</span>
+              <span class="risk-scale" role="img" aria-label="Risk level 3 out of 5"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span><span></span></span>
+            </button>
+            <div class="option-details" id="details-gold">
+              <dl>
+                <div><dt>What it is</dt><dd>A physical metal or an investment linked to its value; prices can change.</dd></div>
+                <div><dt>How to start</dt><dd>Learn about purity, storage, buying and selling costs, and how ownership is verified.</dd></div>
+                <div><dt>Liquidity</dt><dd>Moderate; selling takes effort and may involve a price difference.</dd></div>
+                <div><dt>Who it suits</dt><dd>You, if you understand changing prices and can plan for safekeeping.</dd></div>
+              </dl>
+            </div>
           </article>
 
-          <article class="option-card">
-            <h3>Real estate</h3>
-            <dl>
-              <div><dt>What it is</dt><dd>Land or buildings that may be bought, held, or rented.</dd></div>
-              <div><dt>How to start</dt><dd>Check ownership records, legal requirements, ongoing costs, and local rules independently.</dd></div>
-              <div><dt>Risk · 4 of 5</dt><dd><span class="risk-value">4/5</span><div class="risk-scale" role="img" aria-label="Risk level 4 out of 5"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span></div></dd></div>
-              <div><dt>Liquidity</dt><dd>Low; selling can take time and includes transaction costs.</dd></div>
-              <div><dt>Who it suits</dt><dd>You, if you can research carefully and manage a long-term commitment.</dd></div>
-            </dl>
-            <p class="card-note">Risk varies by asset, terms, and personal circumstances.</p>
+          <article class="option-card" data-risk="4">
+            <button class="option-toggle" type="button" aria-expanded="false" aria-controls="details-real-estate">
+              <h3><span class="option-title"><span aria-hidden="true">🏠</span>Real estate</span></h3>
+              <span class="option-summary">Buy, hold, or rent land or buildings over the long term.</span>
+              <span class="option-risk">Risk 4 of 5</span>
+              <span class="risk-scale" role="img" aria-label="Risk level 4 out of 5"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span></span>
+            </button>
+            <div class="option-details" id="details-real-estate">
+              <dl>
+                <div><dt>What it is</dt><dd>Land or buildings that may be bought, held, or rented.</dd></div>
+                <div><dt>How to start</dt><dd>Check ownership records, legal requirements, ongoing costs, and local rules independently.</dd></div>
+                <div><dt>Liquidity</dt><dd>Low; selling can take time and includes transaction costs.</dd></div>
+                <div><dt>Who it suits</dt><dd>You, if you can research carefully and manage a long-term commitment.</dd></div>
+              </dl>
+              <p class="card-note">Risk varies by asset, terms, and personal circumstances.</p>
+            </div>
           </article>
         </div>
       </div>
@@ -695,6 +837,42 @@
   </footer>
 
   <script>
+    const optionCards = document.querySelectorAll(".option-card");
+
+    optionCards.forEach((card) => {
+      const toggle = card.querySelector(".option-toggle");
+
+      toggle.addEventListener("click", () => {
+        const isOpen = card.classList.toggle("is-open");
+        toggle.setAttribute("aria-expanded", String(isOpen));
+      });
+    });
+
+    const filterButtons = document.querySelectorAll(".filter-button");
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const filter = button.dataset.filter;
+
+        filterButtons.forEach((item) => {
+          const isActive = item === button;
+          item.classList.toggle("is-active", isActive);
+          item.setAttribute("aria-pressed", String(isActive));
+        });
+
+        optionCards.forEach((card) => {
+          const risk = Number(card.dataset.risk);
+          const matches =
+            filter === "all" ||
+            (filter === "lower" && risk >= 1 && risk <= 2) ||
+            (filter === "medium" && risk === 3) ||
+            (filter === "higher" && risk >= 4 && risk <= 5);
+
+          card.hidden = !matches;
+        });
+      });
+    });
+
     const newsletterForm = document.querySelector("#newsletter-form");
     const newsletterEmail = document.querySelector("#newsletter-email");
     const formStatus = document.querySelector("#form-status");

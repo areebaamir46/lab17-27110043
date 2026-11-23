@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A calm, practical introduction to investing in Pakistan, from First Rupee.">
+  <title>First Rupee — Your first steps to growing your money</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #1F5F5B;
+      --teal-dark: #164744;
+      --cream: #FAF7F0;
+      --ink: #1E2A2A;
+      --muted: #5C6B6A;
+      --sage: #DCE8E2;
+      --saffron: #E0A43A;
+      --risk: #B84A3E;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Inter", sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-family: "Source Serif 4", serif;
+      font-weight: 600;
+      line-height: 1.15;
+    }
+
+    p {
+      margin: 0;
+      max-width: 70ch;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      border-bottom: 1px solid var(--sage);
+    }
+
+    .header-inner {
+      display: flex;
+      min-height: 96px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      flex-direction: column;
+      text-decoration: none;
+    }
+
+    .brand-name {
+      color: var(--teal);
+      font-family: "Source Serif 4", serif;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .brand-tagline {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px 24px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    nav a {
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    nav a:hover,
+    nav a:focus-visible {
+      color: var(--teal-dark);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .hero {
+      padding: 80px 0 72px;
+    }
+
+    .hero-panel {
+      position: relative;
+      overflow: hidden;
+      padding: 64px;
+      border-radius: 12px;
+      background: var(--teal);
+      color: var(--cream);
+    }
+
+    .hero-panel::after {
+      position: absolute;
+      right: -72px;
+      bottom: -132px;
+      width: 320px;
+      height: 320px;
+      border: 1px solid var(--sage);
+      border-radius: 50%;
+      content: "";
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      margin-bottom: 16px;
+      color: var(--saffron);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      max-width: 680px;
+      font-size: clamp(40px, 6vw, 64px);
+      letter-spacing: -0.02em;
+    }
+
+    .hero-copy {
+      max-width: 560px;
+      margin-top: 24px;
+      color: var(--cream);
+      font-size: 18px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 32px;
+      padding: 8px 24px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--saffron);
+      color: var(--ink);
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      background: var(--cream);
+    }
+
+    .last-updated {
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .hero .last-updated {
+      color: var(--cream);
+    }
+
+    .section {
+      padding: 64px 0;
+    }
+
+    .section-heading {
+      max-width: 680px;
+      margin-bottom: 32px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(32px, 4vw, 44px);
+    }
+
+    .section-heading p {
+      margin-top: 16px;
+      color: var(--muted);
+    }
+
+    .compounding {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(240px, 0.65fr);
+      align-items: center;
+      gap: 48px;
+    }
+
+    .compounding-copy {
+      max-width: 600px;
+    }
+
+    .compounding-copy p + p {
+      margin-top: 16px;
+    }
+
+    .callout {
+      padding: 32px;
+      border-radius: 12px;
+      background: var(--sage);
+      box-shadow: 0 8px 24px var(--sage);
+    }
+
+    .callout h3 {
+      margin-bottom: 12px;
+      color: var(--teal-dark);
+      font-size: 24px;
+    }
+
+    .callout p {
+      color: var(--muted);
+    }
+
+    .options-section {
+      background: var(--sage);
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .option-card {
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      border-radius: 12px;
+      background: var(--cream);
+      box-shadow: 0 8px 24px var(--sage);
+    }
+
+    .option-card h3 {
+      margin-bottom: 20px;
+      color: var(--teal-dark);
+      font-size: 24px;
+    }
+
+    .option-card dl {
+      display: grid;
+      gap: 16px;
+      margin: 0;
+    }
+
+    .option-card dt {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .option-card dd {
+      margin: 8px 0 0;
+      max-width: 70ch;
+      font-size: 14px;
+    }
+
+    .risk-value,
+    .numeric {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .risk-scale {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .risk-scale span {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--sage);
+    }
+
+    .risk-scale span.filled {
+      background: var(--teal);
+    }
+
+    .card-note {
+      margin-top: auto;
+      padding-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .ladder {
+      display: grid;
+      gap: 16px;
+      max-width: 800px;
+    }
+
+    .ladder-row {
+      display: grid;
+      grid-template-columns: minmax(140px, 0.7fr) 1fr;
+      align-items: center;
+      gap: 24px;
+      padding: 16px 24px;
+      border-radius: 12px;
+      background: var(--sage);
+    }
+
+    .ladder-row h3 {
+      color: var(--teal-dark);
+      font-size: 20px;
+    }
+
+    .ladder-row p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .ladder-axis {
+      display: flex;
+      justify-content: space-between;
+      max-width: 800px;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .newsletter {
+      padding: 64px;
+      border-radius: 12px;
+      background: var(--teal);
+      color: var(--cream);
+    }
+
+    .newsletter h2 {
+      font-size: clamp(32px, 4vw, 44px);
+    }
+
+    .newsletter-copy {
+      max-width: 560px;
+      margin-top: 16px;
+    }
+
+    .newsletter-form {
+      display: flex;
+      max-width: 600px;
+      align-items: flex-start;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .email-field {
+      flex: 1;
+    }
+
+    .email-field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .email-field input {
+      width: 100%;
+      min-height: 48px;
+      padding: 8px 16px;
+      border: 1px solid var(--sage);
+      border-radius: 12px;
+      background: var(--cream);
+      color: var(--ink);
+    }
+
+    .email-field input:focus-visible {
+      outline: 3px solid var(--saffron);
+      outline-offset: 2px;
+    }
+
+    .newsletter-form .button {
+      flex: 0 0 auto;
+      margin-top: 32px;
+    }
+
+    .form-note,
+    .form-status {
+      max-width: 560px;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+    .form-status {
+      min-height: 21px;
+      color: var(--saffron);
+    }
+
+    footer {
+      padding: 32px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-top: 1px solid var(--sage);
+      padding-top: 24px;
+    }
+
+    @media (max-width: 800px) {
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        padding: 16px 0;
+      }
+
+      nav ul {
+        justify-content: flex-start;
+      }
+
+      .hero {
+        padding: 40px 0;
+      }
+
+      .hero-panel,
+      .newsletter {
+        padding: 40px 32px;
+      }
+
+      .compounding {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .options-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .wrap {
+        width: min(100% - 32px, 1120px);
+      }
+
+      .section {
+        padding: 48px 0;
+      }
+
+      .hero-panel,
+      .newsletter {
+        padding: 32px 24px;
+      }
+
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ladder-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .newsletter-form {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .email-field,
+      .newsletter-form .button {
+        width: 100%;
+      }
+
+      .newsletter-form .button {
+        margin-top: 8px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html" aria-label="First Rupee home">
+        <span class="brand-name">First Rupee</span>
+        <span class="brand-tagline">Your first steps to growing your money.</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <ul>
+          <li><a href="index.html" aria-current="page">Home</a></li>
+          <li><a href="index.html#ways">Ways to Invest</a></li>
+          <li><a href="tools.html#calculator">Calculator</a></li>
+          <li><a href="tools.html#quiz">Risk Quiz</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-panel">
+          <p class="eyebrow">A clear start with money</p>
+          <h1>Learn the basics of investing in Pakistan.</h1>
+          <p class="hero-copy">Understand your options, their risks, and the first steps you can take at your own pace.</p>
+          <a class="button" href="#ways">Explore ways to invest</a>
+          <p class="last-updated">Last updated: 23 November 2026</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="why-heading">
+      <div class="wrap compounding">
+        <div class="compounding-copy">
+          <div class="section-heading">
+            <h2 id="why-heading">Why invest?</h2>
+          </div>
+          <p>Saving sets money aside. Investing puts it into assets that may grow in value, while also carrying risk.</p>
+          <p>Compounding means earning growth on your original money and on earlier growth. Given time, that can help growth build.</p>
+          <p>It is not a promise of profit. Values can fall, and some investments take time to turn into cash.</p>
+        </div>
+        <aside class="callout">
+          <h3>Small steps count</h3>
+          <p>Start by learning what you can afford to set aside. Your goals and comfort with risk can guide what you explore.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section options-section" id="ways" aria-labelledby="ways-heading">
+      <div class="wrap">
+        <div class="section-heading">
+          <h2 id="ways-heading">Six ways to invest</h2>
+          <p>Liquidity means how easily you can access your money. Risk ratings are simple learning guides, not guarantees.</p>
+        </div>
+        <div class="options-grid">
+          <article class="option-card">
+            <h3>Savings accounts</h3>
+            <dl>
+              <div><dt>What it is</dt><dd>A bank account for keeping money accessible. Any return depends on the account terms.</dd></div>
+              <div><dt>How to start</dt><dd>Compare account terms, fees, access, and deposit protections before opening an account.</dd></div>
+              <div><dt>Risk · 1 of 5</dt><dd><span class="risk-value">1/5</span><div class="risk-scale" role="img" aria-label="Risk level 1 out of 5"><span class="filled"></span><span></span><span></span><span></span><span></span></div></dd></div>
+              <div><dt>Liquidity</dt><dd>Usually high; check withdrawal rules and limits.</dd></div>
+              <div><dt>Who it suits</dt><dd>You, if access and a simple place to keep savings matter to you.</dd></div>
+            </dl>
+          </article>
+
+          <article class="option-card">
+            <h3>National Savings schemes</h3>
+            <dl>
+              <div><dt>What it is</dt><dd>Government-backed savings instruments with terms that vary by scheme.</dd></div>
+              <div><dt>How to start</dt><dd>Read the official scheme rules, eligibility, holding period, and early encashment terms.</dd></div>
+              <div><dt>Risk · 2 of 5</dt><dd><span class="risk-value">2/5</span><div class="risk-scale" role="img" aria-label="Risk level 2 out of 5"><span class="filled"></span><span class="filled"></span><span></span><span></span><span></span></div></dd></div>
+              <div><dt>Liquidity</dt><dd>Varies; some schemes require you to wait or accept different terms.</dd></div>
+              <div><dt>Who it suits</dt><dd>You, if you prefer set terms and can match them to your time horizon.</dd></div>
+            </dl>
+          </article>
+
+          <article class="option-card">
+            <h3>Mutual funds</h3>
+            <dl>
+              <div><dt>What it is</dt><dd>A pool of investors’ money managed across assets under a fund’s stated rules.</dd></div>
+              <div><dt>How to start</dt><dd>Learn the fund type, fees, risks, and withdrawal process before investing.</dd></div>
+              <div><dt>Risk · 3 of 5</dt><dd><span class="risk-value">3/5</span><div class="risk-scale" role="img" aria-label="Risk level 3 out of 5"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span><span></span></div></dd></div>
+              <div><dt>Liquidity</dt><dd>Often moderate to high; processing time depends on the fund.</dd></div>
+              <div><dt>Who it suits</dt><dd>You, if you want managed exposure and understand the fund’s risks and fees.</dd></div>
+            </dl>
+          </article>
+
+          <article class="option-card">
+            <h3>PSX stocks</h3>
+            <dl>
+              <div><dt>What it is</dt><dd>Shares are ownership units in companies listed on the Pakistan Stock Exchange (PSX).</dd></div>
+              <div><dt>How to start</dt><dd>Learn how regulated trading accounts work and how to research a company.</dd></div>
+              <div><dt>Risk · 4 of 5</dt><dd><span class="risk-value">4/5</span><div class="risk-scale" role="img" aria-label="Risk level 4 out of 5"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span></div></dd></div>
+              <div><dt>Liquidity</dt><dd>Varies by share and market conditions; a sale price is not assured.</dd></div>
+              <div><dt>Who it suits</dt><dd>You, if you can handle price changes and have time to learn.</dd></div>
+            </dl>
+          </article>
+
+          <article class="option-card">
+            <h3>Gold</h3>
+            <dl>
+              <div><dt>What it is</dt><dd>A physical metal or an investment linked to its value; prices can change.</dd></div>
+              <div><dt>How to start</dt><dd>Learn about purity, storage, buying and selling costs, and how ownership is verified.</dd></div>
+              <div><dt>Risk · 3 of 5</dt><dd><span class="risk-value">3/5</span><div class="risk-scale" role="img" aria-label="Risk level 3 out of 5"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span><span></span></div></dd></div>
+              <div><dt>Liquidity</dt><dd>Moderate; selling takes effort and may involve a price difference.</dd></div>
+              <div><dt>Who it suits</dt><dd>You, if you understand changing prices and can plan for safekeeping.</dd></div>
+            </dl>
+          </article>
+
+          <article class="option-card">
+            <h3>Real estate</h3>
+            <dl>
+              <div><dt>What it is</dt><dd>Land or buildings that may be bought, held, or rented.</dd></div>
+              <div><dt>How to start</dt><dd>Check ownership records, legal requirements, ongoing costs, and local rules independently.</dd></div>
+              <div><dt>Risk · 4 of 5</dt><dd><span class="risk-value">4/5</span><div class="risk-scale" role="img" aria-label="Risk level 4 out of 5"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span></div></dd></div>
+              <div><dt>Liquidity</dt><dd>Low; selling can take time and includes transaction costs.</dd></div>
+              <div><dt>Who it suits</dt><dd>You, if you can research carefully and manage a long-term commitment.</dd></div>
+            </dl>
+            <p class="card-note">Risk varies by asset, terms, and personal circumstances.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="ladder-heading">
+      <div class="wrap">
+        <div class="section-heading">
+          <h2 id="ladder-heading">A simple risk and return ladder</h2>
+          <p>Higher potential return can come with higher risk. It is never guaranteed, and values can fall.</p>
+        </div>
+        <div class="ladder" aria-label="Illustrative risk and potential return ladder">
+          <div class="ladder-row">
+            <h3>Lower risk</h3>
+            <p>Savings accounts and some National Savings schemes may have steadier values under their terms.</p>
+          </div>
+          <div class="ladder-row">
+            <h3>Middle range</h3>
+            <p>Some mutual funds and gold can move in value; risk depends on the specific asset or fund.</p>
+          </div>
+          <div class="ladder-row">
+            <h3>Higher risk</h3>
+            <p>PSX stocks and real estate can change in value and may take time to sell.</p>
+          </div>
+        </div>
+        <div class="ladder-axis" aria-hidden="true">
+          <span>Lower potential return</span>
+          <span>Higher potential return</span>
+        </div>
+        <p class="last-updated">This ladder is illustrative, not a forecast or ranking of specific investments.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="newsletter-heading">
+      <div class="wrap">
+        <div class="newsletter">
+          <h2 id="newsletter-heading">Learn one step at a time</h2>
+          <p class="newsletter-copy">Get a calm note with practical money lessons. Your email is checked in your browser.</p>
+          <form class="newsletter-form" id="newsletter-form">
+            <div class="email-field">
+              <label for="newsletter-email">Email address</label>
+              <input id="newsletter-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+            </div>
+            <button class="button" type="submit">Join the newsletter</button>
+          </form>
+          <p class="form-note">This sign-up is not connected to a mailing list. Your email is not sent or stored.</p>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <p>First Rupee</p>
+      <p>Educational content, not financial advice</p>
+    </div>
+  </footer>
+
+  <script>
+    const newsletterForm = document.querySelector("#newsletter-form");
+    const newsletterEmail = document.querySelector("#newsletter-email");
+    const formStatus = document.querySelector("#form-status");
+
+    newsletterForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!newsletterForm.reportValidity()) {
+        return;
+      }
+
+      formStatus.textContent = "Your email address looks valid. No information has been sent.";
+    });
+
+    newsletterEmail.addEventListener("input", () => {
+      formStatus.textContent = "";
+    });
+  </script>
+</body>
+</html>

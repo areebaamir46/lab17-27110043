@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore compound growth and your comfort with investment risk with First Rupee.">
+  <title>Calculator and Risk Quiz — First Rupee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #1F5F5B;
+      --teal-dark: #164744;
+      --cream: #FAF7F0;
+      --ink: #1E2A2A;
+      --muted: #5C6B6A;
+      --sage: #DCE8E2;
+      --saffron: #E0A43A;
+      --risk: #B84A3E;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Inter", sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-family: "Source Serif 4", serif;
+      font-weight: 600;
+      line-height: 1.15;
+    }
+
+    p {
+      max-width: 70ch;
+      margin: 0;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      border-bottom: 1px solid var(--sage);
+    }
+
+    .header-inner {
+      display: flex;
+      min-height: 96px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      flex-direction: column;
+      text-decoration: none;
+    }
+
+    .brand-name {
+      color: var(--teal);
+      font-family: "Source Serif 4", serif;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .brand-tagline {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px 24px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    nav a {
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    nav a:hover,
+    nav a:focus-visible {
+      color: var(--teal-dark);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .hero {
+      padding: 64px 0 40px;
+    }
+
+    .hero h1 {
+      max-width: 680px;
+      color: var(--teal-dark);
+      font-size: clamp(40px, 6vw, 56px);
+      letter-spacing: -0.02em;
+    }
+
+    .hero p:not(.last-updated) {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .last-updated {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .section {
+      padding: 40px 0 64px;
+    }
+
+    .section-heading {
+      max-width: 720px;
+      margin-bottom: 32px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(32px, 4vw, 44px);
+    }
+
+    .section-heading p {
+      margin-top: 16px;
+      color: var(--muted);
+    }
+
+    .calculator-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      align-items: start;
+      gap: 24px;
+    }
+
+    .panel {
+      padding: 32px;
+      border-radius: 12px;
+      background: var(--sage);
+    }
+
+    .fields {
+      display: grid;
+      gap: 24px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .field-help {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .input-pair {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 120px;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .input-pair input[type="range"] {
+      width: 100%;
+      accent-color: var(--teal);
+    }
+
+    .input-pair input[type="number"] {
+      width: 100%;
+      min-height: 44px;
+      padding: 8px;
+      border: 1px solid var(--muted);
+      border-radius: 12px;
+      background: var(--cream);
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+
+    input:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--saffron);
+      outline-offset: 2px;
+    }
+
+    .results h3 {
+      margin-bottom: 24px;
+      color: var(--teal-dark);
+      font-size: 24px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .result-item {
+      padding: 16px;
+      border-radius: 12px;
+      background: var(--cream);
+    }
+
+    .result-item dt {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .result-item dd {
+      margin: 8px 0 0;
+      color: var(--teal-dark);
+      font-size: 20px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      overflow-wrap: anywhere;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 32px;
+      border-radius: 12px;
+      background: var(--cream);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+      text-align: left;
+    }
+
+    caption {
+      padding: 16px;
+      color: var(--teal-dark);
+      font-family: "Source Serif 4", serif;
+      font-size: 20px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    th,
+    td {
+      padding: 16px;
+      border-top: 1px solid var(--sage);
+      white-space: nowrap;
+    }
+
+    th {
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .assumptions {
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .assumptions p + p {
+      margin-top: 8px;
+    }
+
+    .status {
+      min-height: 24px;
+      margin-top: 8px;
+      color: var(--risk);
+      font-size: 13px;
+    }
+
+    .quiz-section {
+      background: var(--sage);
+    }
+
+    .quiz-panel {
+      max-width: 760px;
+      padding: 32px;
+      border-radius: 12px;
+      background: var(--cream);
+    }
+
+    .quiz-intro {
+      margin-bottom: 24px;
+      color: var(--muted);
+    }
+
+    .progress-copy {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    progress {
+      display: block;
+      width: 100%;
+      height: 12px;
+      margin-bottom: 24px;
+      accent-color: var(--teal);
+    }
+
+    .question-title {
+      margin-bottom: 16px;
+      font-family: "Source Serif 4", serif;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .answers {
+      display: grid;
+      gap: 8px;
+      padding: 0;
+      border: 0;
+    }
+
+    .answer {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px;
+      border: 1px solid var(--sage);
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .answer:has(input:checked) {
+      border-color: var(--teal);
+      background: var(--sage);
+    }
+
+    .answer input {
+      flex: 0 0 auto;
+      margin-top: 8px;
+      accent-color: var(--teal);
+    }
+
+    .quiz-controls {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .button {
+      min-height: 48px;
+      padding: 8px 24px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--teal);
+      color: var(--cream);
+      font-weight: 700;
+    }
+
+    .button:hover:not(:disabled) {
+      background: var(--teal-dark);
+    }
+
+    .button:disabled {
+      background: var(--muted);
+      cursor: not-allowed;
+    }
+
+    .quiz-result {
+      padding: 24px;
+      border-radius: 12px;
+      background: var(--sage);
+    }
+
+    .quiz-result h3 {
+      margin-bottom: 12px;
+      color: var(--teal-dark);
+      font-size: 28px;
+    }
+
+    .quiz-result p + p {
+      margin-top: 12px;
+    }
+
+    .quiz-disclaimer {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    footer {
+      padding: 32px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-top: 1px solid var(--sage);
+      padding-top: 24px;
+    }
+
+    @media (max-width: 800px) {
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        padding: 16px 0;
+      }
+
+      nav ul {
+        justify-content: flex-start;
+      }
+
+      .calculator-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .wrap {
+        width: min(100% - 32px, 1120px);
+      }
+
+      .panel,
+      .quiz-panel {
+        padding: 24px;
+      }
+
+      .input-pair {
+        grid-template-columns: minmax(0, 1fr) 104px;
+        gap: 8px;
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quiz-controls {
+        flex-direction: column-reverse;
+      }
+
+      .quiz-controls .button {
+        width: 100%;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html" aria-label="First Rupee home">
+        <span class="brand-name">First Rupee</span>
+        <span class="brand-tagline">Your first steps to growing your money.</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#ways">Ways to Invest</a></li>
+          <li><a href="tools.html#calculator" aria-current="page">Calculator</a></li>
+          <li><a href="tools.html#quiz">Risk Quiz</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <h1>Explore growth and risk at your pace.</h1>
+        <p>Try an illustrative compound growth estimate, then reflect on how you feel about risk.</p>
+        <p class="last-updated">Last updated: 23 November 2026</p>
+      </div>
+    </section>
+
+    <section class="section" id="calculator" aria-labelledby="calculator-heading">
+      <div class="wrap">
+        <div class="section-heading">
+          <h2 id="calculator-heading">Compound growth calculator</h2>
+          <p>Compound growth means adding growth to your balance, so later growth can build on it.</p>
+          <p>Nominal means before inflation. Inflation-adjusted means expressed in today’s purchasing power.</p>
+          <p>Change an amount or rate to update the estimate. Illustrative means an example, not a forecast.</p>
+        </div>
+        <div class="calculator-layout">
+          <div class="panel fields" id="calculator-fields">
+            <div class="field">
+              <label for="starting-number">Starting amount (Rs)</label>
+              <div class="input-pair">
+                <input id="starting-range" data-key="starting" type="range" min="0" max="10000000" step="1000" value="50000" aria-label="Starting amount slider">
+                <input id="starting-number" data-key="starting" type="number" min="0" max="10000000" step="1000" value="50000" inputmode="numeric">
+              </div>
+            </div>
+            <div class="field">
+              <label for="monthly-number">Monthly deposit (Rs)</label>
+              <div class="input-pair">
+                <input id="monthly-range" data-key="monthly" type="range" min="0" max="1000000" step="1000" value="5000" aria-label="Monthly deposit slider">
+                <input id="monthly-number" data-key="monthly" type="number" min="0" max="1000000" step="1000" value="5000" inputmode="numeric">
+              </div>
+            </div>
+            <div class="field">
+              <label for="rate-number">Illustrative annual rate (%)</label>
+              <div class="input-pair">
+                <input id="rate-range" data-key="rate" type="range" min="0" max="30" step="0.1" value="7.5" aria-label="Illustrative annual rate slider">
+                <input id="rate-number" data-key="rate" type="number" min="0" max="30" step="0.1" value="7.5" inputmode="decimal">
+              </div>
+              <span class="field-help">A rate is a percentage used to estimate yearly growth. This one is illustrative, not published.</span>
+            </div>
+            <div class="field">
+              <label for="years-number">Years</label>
+              <div class="input-pair">
+                <input id="years-range" data-key="years" type="range" min="1" max="50" step="1" value="10" aria-label="Years slider">
+                <input id="years-number" data-key="years" type="number" min="1" max="50" step="1" value="10" inputmode="numeric">
+              </div>
+            </div>
+            <div class="field">
+              <label for="inflation-number">Illustrative inflation rate (%)</label>
+              <div class="input-pair">
+                <input id="inflation-range" data-key="inflation" type="range" min="0" max="30" step="0.1" value="3.0" aria-label="Illustrative inflation rate slider">
+                <input id="inflation-number" data-key="inflation" type="number" min="0" max="30" step="0.1" value="3.0" inputmode="decimal">
+              </div>
+              <span class="field-help">Inflation means rising prices that reduce what money can buy. This rate is illustrative.</span>
+            </div>
+            <p class="status" id="calculator-status" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="panel results" aria-live="polite">
+            <h3>Estimated totals</h3>
+            <dl class="result-grid">
+              <div class="result-item"><dt>Nominal total</dt><dd id="nominal-total">—</dd></div>
+              <div class="result-item"><dt>Inflation-adjusted total</dt><dd id="real-total">—</dd></div>
+              <div class="result-item"><dt>Total deposited</dt><dd id="deposited-total">—</dd></div>
+              <div class="result-item"><dt>Estimated growth</dt><dd id="growth-total">—</dd></div>
+            </dl>
+            <div class="table-wrap">
+              <table>
+                <caption>Year-by-year estimate</caption>
+                <thead>
+                  <tr><th scope="col">Year</th><th scope="col">Deposited</th><th scope="col">Nominal total</th><th scope="col">Inflation-adjusted</th></tr>
+                </thead>
+                <tbody id="year-table"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="assumptions">
+          <p><strong>Formula:</strong> starting amount × (1 + monthly rate)<sup>months</sup> + monthly deposit × [((1 + monthly rate)<sup>months</sup> − 1) ÷ monthly rate]. At a zero rate, total equals starting amount plus deposits.</p>
+          <p><strong>Assumptions:</strong> interest compounds monthly; deposits are made at each month’s end. The annual rate is divided by twelve. Inflation adjusts purchasing power annually. Taxes, fees, and changing rates are excluded. Results are estimates, not promises.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section quiz-section" id="quiz" aria-labelledby="quiz-heading">
+      <div class="wrap">
+        <div class="section-heading">
+          <h2 id="quiz-heading">Risk comfort quiz</h2>
+          <p>Risk means uncertain outcomes, including possible loss. Asset categories group investments with similar features.</p>
+          <p>Equity means company ownership. Fixed-income means assets with defined payment terms. Multi-asset combines categories; diversified means spread across investments.</p>
+          <p>This reflection can help you learn about asset categories. It does not choose investments for you.</p>
+        </div>
+        <div class="quiz-panel" id="quiz-panel">
+          <p class="quiz-intro">Choose the answer that feels closest to you. There are eight questions, each scored from one to four.</p>
+          <div class="progress-copy">
+            <span id="question-count">Question 1 of 8</span>
+            <span id="progress-percent">0% complete</span>
+          </div>
+          <progress id="quiz-progress" value="0" max="8" aria-label="Quiz progress"></progress>
+          <div id="question-area"></div>
+          <div class="quiz-controls">
+            <button class="button" type="button" id="previous-button" disabled>Previous</button>
+            <button class="button" type="button" id="next-button" disabled>Next question</button>
+          </div>
+          <p class="quiz-disclaimer">Your answers stay in this page’s temporary memory. They are never saved or sent anywhere.</p>
+        </div>
+        <div class="quiz-panel" id="quiz-result-panel" hidden aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <p>First Rupee</p>
+      <p>Educational content, not financial advice</p>
+    </div>
+  </footer>
+
+  <script>
+    const formatter = new Intl.NumberFormat("en-US", {
+      maximumFractionDigits: 0
+    });
+    const calculatorStatus = document.querySelector("#calculator-status");
+    const inputs = [...document.querySelectorAll("#calculator-fields input")];
+    const resultElements = {
+      nominal: document.querySelector("#nominal-total"),
+      real: document.querySelector("#real-total"),
+      deposited: document.querySelector("#deposited-total"),
+      growth: document.querySelector("#growth-total"),
+      table: document.querySelector("#year-table")
+    };
+
+    function money(value) {
+      return `Rs ${formatter.format(Math.round(value))}`;
+    }
+
+    function readValues() {
+      const values = {};
+      for (const input of inputs.filter((item) => item.type === "number")) {
+        if (!input.validity.valid || input.value === "") {
+          calculatorStatus.textContent = "Enter a valid value within each field’s range.";
+          input.setAttribute("aria-invalid", "true");
+          return null;
+        }
+        input.removeAttribute("aria-invalid");
+        values[input.dataset.key] = Number(input.value);
+      }
+      calculatorStatus.textContent = "";
+      return values;
+    }
+
+    function calculateTotal(starting, monthly, annualRate, months) {
+      const monthlyRate = annualRate / 100 / 12;
+      if (monthlyRate === 0) {
+        return starting + monthly * months;
+      }
+      const factor = (1 + monthlyRate) ** months;
+      return starting * factor + monthly * ((factor - 1) / monthlyRate);
+    }
+
+    function updateCalculator() {
+      const values = readValues();
+      if (!values) {
+        return;
+      }
+
+      const { starting, monthly, rate, years, inflation } = values;
+      const months = years * 12;
+      const total = calculateTotal(starting, monthly, rate, months);
+      const deposited = starting + monthly * months;
+      const adjusted = total / ((1 + inflation / 100) ** years);
+
+      resultElements.nominal.textContent = money(total);
+      resultElements.real.textContent = money(adjusted);
+      resultElements.deposited.textContent = money(deposited);
+      resultElements.growth.textContent = money(total - deposited);
+
+      const rows = [];
+      for (let year = 1; year <= years; year += 1) {
+        const yearMonths = year * 12;
+        const yearTotal = calculateTotal(starting, monthly, rate, yearMonths);
+        const yearDeposited = starting + monthly * yearMonths;
+        const yearAdjusted = yearTotal / ((1 + inflation / 100) ** year);
+        rows.push(
+          `<tr><th scope="row">${year}</th><td>${money(yearDeposited)}</td><td>${money(yearTotal)}</td><td>${money(yearAdjusted)}</td></tr>`
+        );
+      }
+      resultElements.table.innerHTML = rows.join("");
+    }
+
+    for (const input of inputs) {
+      input.addEventListener("input", () => {
+        const pairedInputs = inputs.filter((item) => item.dataset.key === input.dataset.key);
+        if (input.type === "number") {
+          if (input.validity.valid && input.value !== "") {
+            pairedInputs.find((item) => item.type === "range").value = input.value;
+          }
+        } else {
+          pairedInputs.find((item) => item.type === "number").value = input.value;
+        }
+        updateCalculator();
+      });
+    }
+
+    const questions = [
+      {
+        prompt: "If an investment fell in value for a while, what would you most likely do?",
+        answers: ["Move my money to something steadier.", "Wait and learn more before deciding.", "Keep my plan, if it still fits my needs.", "Accept the ups and downs for possible long-term growth."]
+      },
+      {
+        prompt: "When might you need the money you are setting aside?",
+        answers: ["At any time, including soon.", "Within the next few years.", "I can leave some of it invested for several years.", "I can leave it invested for many years."]
+      },
+      {
+        prompt: "How do you feel when the value of an investment changes from day to day?",
+        answers: ["Very uncomfortable.", "A little uneasy.", "Mostly comfortable if I understand why.", "Comfortable with larger changes over time."]
+      },
+      {
+        prompt: "What would help you make a money decision?",
+        answers: ["Keeping the value as steady as possible.", "Balancing stability with some change.", "Accepting change for a chance of longer-term growth.", "Focusing on long-term goals despite short-term changes."]
+      },
+      {
+        prompt: "How much time would you like to spend learning about investments?",
+        answers: ["As little as possible; simplicity matters most.", "Some time, with clear explanations.", "Time to compare different asset categories.", "Regular time to understand changing values and risks."]
+      },
+      {
+        prompt: "If your plans changed, how important would quick access to this money be?",
+        answers: ["Very important for nearly all of it.", "Important for much of it.", "I can keep some money accessible separately.", "I can leave a portion untouched for a longer time."]
+      },
+      {
+        prompt: "Which description best fits your experience with changing investment values?",
+        answers: ["I have little experience and want steadiness.", "I am learning and prefer gradual steps.", "I understand values can rise and fall.", "I am comfortable learning through longer-term changes."]
+      },
+      {
+        prompt: "How would you feel if growth was uncertain from year to year?",
+        answers: ["I would prefer not to take that uncertainty.", "I could accept a small amount of uncertainty.", "I could accept some uncertainty for a longer-term goal.", "I could accept more uncertainty for a long-term goal."]
+      }
+    ];
+    const answers = Array(questions.length).fill(null);
+    const questionArea = document.querySelector("#question-area");
+    const questionCount = document.querySelector("#question-count");
+    const progressPercent = document.querySelector("#progress-percent");
+    const progress = document.querySelector("#quiz-progress");
+    const previousButton = document.querySelector("#previous-button");
+    const nextButton = document.querySelector("#next-button");
+    const quizPanel = document.querySelector("#quiz-panel");
+    const quizResultPanel = document.querySelector("#quiz-result-panel");
+    let questionIndex = 0;
+
+    function renderQuestion() {
+      const question = questions[questionIndex];
+      questionCount.textContent = `Question ${questionIndex + 1} of ${questions.length}`;
+      progress.value = questionIndex;
+      progressPercent.textContent = `${Math.round((questionIndex / questions.length) * 100)}% complete`;
+      previousButton.disabled = questionIndex === 0;
+      nextButton.disabled = answers[questionIndex] === null;
+      nextButton.textContent = questionIndex === questions.length - 1 ? "See my reflection" : "Next question";
+
+      const choices = question.answers.map((answer, index) => {
+        const score = index + 1;
+        const checked = answers[questionIndex] === score ? " checked" : "";
+        return `<label class="answer"><input type="radio" name="quiz-answer" value="${score}"${checked}><span>${answer}</span></label>`;
+      }).join("");
+
+      questionArea.innerHTML = `<fieldset class="answers"><legend class="question-title">${question.prompt}</legend>${choices}</fieldset>`;
+      questionArea.querySelectorAll('input[name="quiz-answer"]').forEach((input) => {
+        input.addEventListener("change", () => {
+          answers[questionIndex] = Number(input.value);
+          nextButton.disabled = false;
+        });
+      });
+    }
+
+    function showResult() {
+      const score = answers.reduce((sum, answer) => sum + answer, 0);
+      let band;
+      let explanation;
+      if (score <= 15) {
+        band = "Careful";
+        explanation = "You may want to learn about cash-like and fixed-income asset categories. Cash-like means savings-style categories. Terms and access rules vary.";
+      } else if (score <= 24) {
+        band = "Balanced";
+        explanation = "You may want to learn about fixed-income, diversified multi-asset, and equity categories. Their mix and risks vary.";
+      } else {
+        band = "Growth-minded";
+        explanation = "You may want to learn about equity and diversified multi-asset categories, alongside cash-like categories for near-term needs. Values can change.";
+      }
+
+      quizPanel.hidden = true;
+      quizResultPanel.hidden = false;
+      quizResultPanel.innerHTML = `<div class="quiz-result"><h3>${band}</h3><p>Your reflection score is ${score} out of 32.</p><p>${explanation}</p><p>This is a learning prompt, not personal financial advice or a recommendation.</p><button class="button" type="button" id="restart-quiz">Start again</button></div>`;
+      document.querySelector("#restart-quiz").addEventListener("click", () => {
+        answers.fill(null);
+        questionIndex = 0;
+        quizResultPanel.hidden = true;
+        quizPanel.hidden = false;
+        renderQuestion();
+      });
+    }
+
+    previousButton.addEventListener("click", () => {
+      if (questionIndex > 0) {
+        questionIndex -= 1;
+        renderQuestion();
+      }
+    });
+
+    nextButton.addEventListener("click", () => {
+      if (answers[questionIndex] === null) {
+        return;
+      }
+      if (questionIndex === questions.length - 1) {
+        progress.value = questions.length;
+        progressPercent.textContent = "100% complete";
+        showResult();
+        return;
+      }
+      questionIndex += 1;
+      renderQuestion();
+    });
+
+    updateCalculator();
+    renderQuestion();
+  </script>
+</body>
+</html>

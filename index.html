@@ -354,6 +354,10 @@
       transform: translateY(-4px);
     }
 
+    .option-card.is-highlighted {
+      border: 2px solid var(--saffron);
+    }
+
     .option-card[hidden] {
       display: none;
     }
@@ -519,19 +523,41 @@
       grid-template-columns: minmax(140px, 0.7fr) 1fr;
       align-items: center;
       gap: 24px;
+      width: 100%;
       padding: 16px 24px;
+      border: 2px solid transparent;
       border-radius: 12px;
       background: var(--sage);
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
     }
 
-    .ladder-row h3 {
+    .ladder-row:hover,
+    .ladder-row:focus-visible,
+    .ladder-row.is-active {
+      border-color: var(--saffron);
+    }
+
+    .ladder-title {
       color: var(--teal-dark);
+      font-family: "Source Serif 4", serif;
       font-size: 20px;
+      font-weight: 600;
     }
 
     .ladder-row p {
       color: var(--muted);
       font-size: 14px;
+    }
+
+    .ladder-row.is-active .ladder-title {
+      color: var(--teal);
+    }
+
+    .ladder-row h3 {
+      color: var(--teal-dark);
+      font-size: 20px;
     }
 
     .ladder-axis {
@@ -541,6 +567,51 @@
       margin-top: 16px;
       color: var(--muted);
       font-size: 13px;
+    }
+
+    .faq-list {
+      max-width: 800px;
+      border-top: 1px solid var(--sage);
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--sage);
+    }
+
+    .faq-item summary {
+      position: relative;
+      padding: 24px 48px 24px 0;
+      color: var(--teal-dark);
+      font-family: "Source Serif 4", serif;
+      font-size: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-item summary::after {
+      position: absolute;
+      top: 20px;
+      right: 8px;
+      color: var(--teal);
+      content: "+";
+      font-family: "Inter", sans-serif;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .faq-item[open] summary::after {
+      content: "−";
+    }
+
+    .faq-answer {
+      max-width: 70ch;
+      padding: 0 48px 24px 0;
+      color: var(--muted);
     }
 
     .newsletter {
@@ -904,24 +975,55 @@
           <p>Higher potential return can come with higher risk. It is never guaranteed, and values can fall.</p>
         </div>
         <div class="ladder" aria-label="Illustrative risk and potential return ladder">
-          <div class="ladder-row">
-            <h3>Lower risk</h3>
+          <button class="ladder-row" type="button" data-filter="lower" aria-pressed="false">
+            <span class="ladder-title">Lower risk</span>
             <p>Savings accounts and some National Savings schemes may have steadier values under their terms.</p>
-          </div>
-          <div class="ladder-row">
-            <h3>Middle range</h3>
+          </button>
+          <button class="ladder-row" type="button" data-filter="medium" aria-pressed="false">
+            <span class="ladder-title">Middle range</span>
             <p>Some mutual funds and gold can move in value; risk depends on the specific asset or fund.</p>
-          </div>
-          <div class="ladder-row">
-            <h3>Higher risk</h3>
+          </button>
+          <button class="ladder-row" type="button" data-filter="higher" aria-pressed="false">
+            <span class="ladder-title">Higher risk</span>
             <p>PSX stocks and real estate can change in value and may take time to sell.</p>
-          </div>
+          </button>
         </div>
         <div class="ladder-axis" aria-hidden="true">
           <span>Lower potential return</span>
           <span>Higher potential return</span>
         </div>
         <p class="last-updated">This ladder is illustrative, not a forecast or ranking of specific investments.</p>
+      </div>
+    </section>
+
+    <section class="section reveal" aria-labelledby="faq-heading">
+      <div class="wrap">
+        <div class="section-heading">
+          <h2 id="faq-heading">Beginner questions</h2>
+          <p>Start with simple definitions before comparing investment choices.</p>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>How much should I invest first?</summary>
+            <p class="faq-answer">Begin with an amount you can set aside without risking essential needs. A range such as Rs 1,000–5,000 can help you start learning.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What is diversification?</summary>
+            <p class="faq-answer">Diversification means spreading money across different asset types. It may reduce dependence on one outcome, but it does not remove risk.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Should I invest before I save?</summary>
+            <p class="faq-answer">Keep a separate emergency fund for urgent costs first. An emergency fund is money held for unexpected needs.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What should my time horizon be?</summary>
+            <p class="faq-answer">Your time horizon is how long you expect to keep money invested. Short goals may need easier access than long goals.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What does risk mean for me?</summary>
+            <p class="faq-answer">Risk is the chance that an investment changes value or loses money. Choose a level you can accept and keep learning about each option.</p>
+          </details>
+        </div>
       </div>
     </section>
 
@@ -1015,6 +1117,11 @@
           item.setAttribute("aria-pressed", String(isActive));
         });
 
+        ladderSteps.forEach((step) => {
+          step.classList.remove("is-active");
+          step.setAttribute("aria-pressed", "false");
+        });
+
         optionCards.forEach((card) => {
           const risk = Number(card.dataset.risk);
           const matches =
@@ -1024,6 +1131,53 @@
             (filter === "higher" && risk >= 4 && risk <= 5);
 
           card.hidden = !matches;
+          card.classList.remove("is-highlighted");
+        });
+      });
+    });
+
+    const ladderSteps = document.querySelectorAll(".ladder-row");
+
+    ladderSteps.forEach((step) => {
+      step.addEventListener("click", () => {
+        const filter = step.dataset.filter;
+        const matchingFilterButton = document.querySelector(`.filter-button[data-filter="${filter}"]`);
+        matchingFilterButton.click();
+
+        ladderSteps.forEach((item) => {
+          const isActive = item === step;
+          item.classList.toggle("is-active", isActive);
+          item.setAttribute("aria-pressed", String(isActive));
+        });
+
+        optionCards.forEach((card) => {
+          const risk = Number(card.dataset.risk);
+          const matches =
+            (filter === "lower" && risk >= 1 && risk <= 2) ||
+            (filter === "medium" && risk === 3) ||
+            (filter === "higher" && risk >= 4 && risk <= 5);
+          card.classList.toggle("is-highlighted", matches);
+        });
+
+        document.querySelector("#ways").scrollIntoView({
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+          block: "start"
+        });
+      });
+    });
+
+    const faqItems = document.querySelectorAll(".faq-item");
+
+    faqItems.forEach((item) => {
+      item.addEventListener("toggle", () => {
+        if (!item.open) {
+          return;
+        }
+
+        faqItems.forEach((otherItem) => {
+          if (otherItem !== item) {
+            otherItem.open = false;
+          }
         });
       });
     });

@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet">
+  <script>document.documentElement.classList.add("js");</script>
   <style>
     :root {
       --teal: #1F5F5B;
@@ -123,7 +124,7 @@
     }
 
     .hero {
-      padding: 80px 0 72px;
+      padding: 32px 0 48px;
     }
 
     .hero-panel {
@@ -148,6 +149,19 @@
       pointer-events: none;
     }
 
+    .hero-layout {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+      align-items: end;
+      gap: 32px;
+    }
+
+    .hero-main {
+      max-width: 680px;
+    }
+
     .eyebrow {
       margin-bottom: 16px;
       color: var(--saffron);
@@ -168,6 +182,59 @@
       margin-top: 24px;
       color: var(--cream);
       font-size: 18px;
+    }
+
+    .growth-teaser {
+      padding: 24px;
+      border-radius: 12px;
+      background: var(--cream);
+      color: var(--ink);
+      box-shadow: 0 8px 24px var(--teal-dark);
+    }
+
+    .growth-teaser h2 {
+      max-width: 28ch;
+      color: var(--teal-dark);
+      font-size: 22px;
+    }
+
+    .growth-slider {
+      width: 100%;
+      margin: 16px 0 8px;
+      accent-color: var(--teal);
+    }
+
+    .growth-years {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .growth-result {
+      margin-top: 16px;
+      color: var(--teal-dark);
+      font-family: "Source Serif 4", serif;
+      font-size: 32px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.1;
+    }
+
+    .growth-note {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .growth-link {
+      display: inline-block;
+      margin-top: 16px;
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 700;
+      text-underline-offset: 4px;
     }
 
     .button {
@@ -203,6 +270,17 @@
 
     .section {
       padding: 64px 0;
+    }
+
+    .js .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 600ms ease, transform 600ms ease;
+    }
+
+    .js .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .section-heading {
@@ -269,6 +347,11 @@
       background: var(--cream);
       box-shadow: 0 8px 24px var(--sage);
       transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .option-card:hover,
+    .option-card:focus-within {
+      transform: translateY(-4px);
     }
 
     .option-card[hidden] {
@@ -554,12 +637,16 @@
       }
 
       .hero {
-        padding: 40px 0;
+        padding: 24px 0 40px;
       }
 
       .hero-panel,
       .newsletter {
         padding: 40px 32px;
+      }
+
+      .hero-layout {
+        grid-template-columns: 1fr;
       }
 
       .compounding {
@@ -613,6 +700,22 @@
         flex-direction: column;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .js .reveal,
+      .js .reveal.is-visible,
+      .option-card,
+      .option-card:hover,
+      .option-card:focus-within {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -634,19 +737,31 @@
   </header>
 
   <main>
-    <section class="hero">
+    <section class="hero reveal">
       <div class="wrap">
         <div class="hero-panel">
-          <p class="eyebrow">A clear start with money</p>
-          <h1>Learn the basics of investing in Pakistan.</h1>
-          <p class="hero-copy">Understand your options, their risks, and the first steps you can take at your own pace.</p>
-          <a class="button" href="#ways">Explore ways to invest</a>
-          <p class="last-updated">Last updated: 23 November 2026</p>
+          <div class="hero-layout">
+            <div class="hero-main">
+              <p class="eyebrow">A clear start with money</p>
+              <h1>Learn the basics of investing in Pakistan.</h1>
+              <p class="hero-copy">Understand your options, their risks, and the first steps you can take at your own pace.</p>
+              <a class="button" href="#ways">Explore ways to invest</a>
+              <p class="last-updated">Last updated: 23 November 2026</p>
+            </div>
+            <aside class="growth-teaser" aria-labelledby="growth-heading">
+              <h2 id="growth-heading">What could Rs 5,000 a month become?</h2>
+              <label class="growth-years" for="growth-years">Time: <span id="growth-year-label">10 years</span></label>
+              <input class="growth-slider" id="growth-years" type="range" min="1" max="30" value="10" step="1">
+              <p class="growth-result" id="growth-result">Rs 0</p>
+              <p class="growth-note">Illustrative result at 10.0% a year.</p>
+              <a class="growth-link" href="tools.html#calculator">Open the full calculator</a>
+            </aside>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="why-heading">
+    <section class="section reveal" aria-labelledby="why-heading">
       <div class="wrap compounding">
         <div class="compounding-copy">
           <div class="section-heading">
@@ -663,7 +778,7 @@
       </div>
     </section>
 
-    <section class="section options-section" id="ways" aria-labelledby="ways-heading">
+    <section class="section reveal options-section" id="ways" aria-labelledby="ways-heading">
       <div class="wrap">
         <div class="section-heading">
           <h2 id="ways-heading">Six ways to invest</h2>
@@ -782,7 +897,7 @@
       </div>
     </section>
 
-    <section class="section" aria-labelledby="ladder-heading">
+    <section class="section reveal" aria-labelledby="ladder-heading">
       <div class="wrap">
         <div class="section-heading">
           <h2 id="ladder-heading">A simple risk and return ladder</h2>
@@ -810,7 +925,7 @@
       </div>
     </section>
 
-    <section class="section" aria-labelledby="newsletter-heading">
+    <section class="section reveal" aria-labelledby="newsletter-heading">
       <div class="wrap">
         <div class="newsletter">
           <h2 id="newsletter-heading">Learn one step at a time</h2>
@@ -837,6 +952,46 @@
   </footer>
 
   <script>
+    const growthYears = document.querySelector("#growth-years");
+    const growthYearLabel = document.querySelector("#growth-year-label");
+    const growthResult = document.querySelector("#growth-result");
+
+    function formatRupees(amount) {
+      return `Rs ${Math.round(amount).toLocaleString("en-PK")}`;
+    }
+
+    function updateGrowthTeaser() {
+      const years = Number(growthYears.value);
+      const monthlyRate = 0.10 / 12;
+      const months = years * 12;
+      const result = months === 0
+        ? 0
+        : 5000 * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+
+      growthYearLabel.textContent = `${years} ${years === 1 ? "year" : "years"}`;
+      growthResult.textContent = formatRupees(result);
+    }
+
+    growthYears.addEventListener("input", updateGrowthTeaser);
+    updateGrowthTeaser();
+
+    const revealSections = document.querySelectorAll(".reveal");
+
+    if ("IntersectionObserver" in window) {
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      revealSections.forEach((section) => revealObserver.observe(section));
+    } else {
+      revealSections.forEach((section) => section.classList.add("is-visible"));
+    }
+
     const optionCards = document.querySelectorAll(".option-card");
 
     optionCards.forEach((card) => {

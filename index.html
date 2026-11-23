@@ -1030,16 +1030,16 @@
     <section class="section reveal" aria-labelledby="newsletter-heading">
       <div class="wrap">
         <div class="newsletter">
-          <h2 id="newsletter-heading">Learn one step at a time</h2>
-          <p class="newsletter-copy">Get a calm note with practical money lessons. Your email is checked in your browser.</p>
+          <h2 id="newsletter-heading">Newsletter demo</h2>
+          <p class="newsletter-copy">This demo only checks whether your email format looks valid. Nothing is sent or stored yet.</p>
           <form class="newsletter-form" id="newsletter-form">
             <div class="email-field">
               <label for="newsletter-email">Email address</label>
               <input id="newsletter-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
             </div>
-            <button class="button" type="submit">Join the newsletter</button>
+            <button class="button" type="submit">Check email format</button>
           </form>
-          <p class="form-note">This sign-up is not connected to a mailing list. Your email is not sent or stored.</p>
+          <p class="form-note">This sign-up is a demo. Nothing is sent or stored yet.</p>
           <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
         </div>
       </div>
@@ -1192,7 +1192,7 @@
         return;
       }
 
-      formStatus.textContent = "Your email address looks valid. No information has been sent.";
+      formStatus.textContent = "The email format is valid. Nothing was sent or stored.";
     });
 
     newsletterEmail.addEventListener("input", () => {
